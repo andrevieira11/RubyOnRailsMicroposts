@@ -1,0 +1,44 @@
+<p> Order by 
+    <% if params[:commit] == ">" %>
+        after
+    <% elsif params[:commit] == "=" %>
+        on
+    <% elsif params[:commit] == "<" %>
+        before
+    <% end %>
+    <%= @time.readable_inspect unless @time == 0 %></p>
+    <div class="field">
+        <%= form_with(model: @static_pages, local: true) do |f| %>
+            <%= f.label :year %>
+            <%= f.number_field :year, class: 'form2' %>
+            
+            <%= f.label :month %>
+            <%= f.number_field :month, class: 'form2' %>
+            
+            <%= f.label :day %>
+            <%= f.number_field :day, class: 'form2' %>
+            <p></p>
+            <%= f.label :hour %>
+            <%= f.number_field :hour, class: 'form2' %>
+            
+            <%= f.label :minute %>
+            <%= f.number_field :minute, class: 'form2' %>
+
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Filter <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><%= f.submit ">", class: "btn btn-primary" %>
+                    <li><%= f.submit "=", class: "btn btn-primary" %>
+                    <li><%= f.submit "<", class: "btn btn-primary" %>
+                </ul>
+            </div>
+        <% end %>
+    </div>
+<% if @feed_items.any? %>
+    <ol class="microposts">
+        <%= render @feed_items %>
+    </ol>
+    <%= will_paginate @feed_items, params: {controller: :static_pages, action: :home } %>
+<% end %>
